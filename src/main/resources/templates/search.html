@@ -12,20 +12,68 @@
 
     <form th:action="@{/search/results}">
         <h2>Search by:</h2>
-
         <p>
-            <span th:each="column : ${columns}">
+            <span th:if="${searchType == 'all'}" th:each="column : ${columns}">
                 <input
                         type="radio"
                         name="searchType"
                         th:id="${column.key}"
                         th:value="${column.key}"
-                        th:checked="${column.key == '${searchType}'}"/>
+                        th:checked="${column.key == 'all'}"/>
+                <label th:for="${column.key}" th:text="${column.value}"></label>
+            </span>
+            <span th:if="${searchType == 'position type'}" th:each="column : ${columns}">
+                <input
+                        type="radio"
+                        name="searchType"
+                        th:id="${column.key}"
+                        th:value="${column.key}"
+                        th:checked="${column.key == 'position type'}"/>
+                <label th:for="${column.key}" th:text="${column.value}"></label>
+            </span>
+            <span th:if="${searchType == 'location'}" th:each="column : ${columns}">
+                <input
+                        type="radio"
+                        name="searchType"
+                        th:id="${column.key}"
+                        th:value="${column.key}"
+                        th:checked="${column.key == 'location'}"/>
+                <label th:for="${column.key}" th:text="${column.value}"></label>
+            </span>
+            <span th:if="${searchType == 'employer'}" th:each="column : ${columns}">
+                <input
+                        type="radio"
+                        name="searchType"
+                        th:id="${column.key}"
+                        th:value="${column.key}"
+                        th:checked="${column.key == 'employer'}"/>
+                <label th:for="${column.key}" th:text="${column.value}"></label>
+            </span>
+            <span th:if="${searchType == 'core competency'}" th:each="column : ${columns}">
+                <input
+                        type="radio"
+                        name="searchType"
+                        th:id="${column.key}"
+                        th:value="${column.key}"
+                        th:checked="${column.key == 'core competency'}"/>
                 <label th:for="${column.key}" th:text="${column.value}"></label>
             </span>
 
         </p>
+        <!--
+                <p>
+                    <span th:each="column : ${columns}">
+                        <input
+                                type="radio"
+                                name="searchType"
+                                th:id="${column.key}"
+                                th:value="${column.key}"
+                                th:checked="${column.key == '${searchType}'}"/>
+                        <label th:for="${column.key}" th:text="${column.value}"></label>
+                    </span>
 
+                </p>
+        -->
         <p>
             <label for="searchTerm">Keyword:</label>
             <input type="text" name="searchTerm" id="searchTerm" th:value="${searchTerm}"/>
@@ -42,8 +90,9 @@
 
     <table class="job-listing" th:each="job : ${jobs}">
         <tr th:each="detail, idx : ${job}" th:class="${idx.odd} ? 'odd'">
-            <td th:text="${#strings.capitalizeWords(detail.key)}"></td>
-            <td th:text="${#strings.capitalizeWords(detail.value)}"></td>
+            <td th:unless="${detail.key == 'name'}"><a th:href="@{/search/results(searchType=${detail.key},searchTerm=${detail.value})}" th:text="${#strings.capitalizeWords(detail.key)}"></a></td>
+            <td th:if="${detail.key == 'name'}" th:text="${#strings.capitalizeWords(detail.key)}"></td>
+            <td><a th:href="@{/search/results(searchType='all',searchTerm=${detail.value})}" th:text="${#strings.capitalizeWords(detail.value)}"></a></td>
         </tr>
     </table>
 

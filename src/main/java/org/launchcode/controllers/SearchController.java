@@ -31,7 +31,7 @@ public class SearchController {
 
         ArrayList<HashMap<String, String>> jobs;
 
-        if (searchTerm.equals(null)) {
+        if (searchTerm.equals("")) {
             jobs = JobData.findAll();
         } else if (searchType.equals("all")){
             jobs = JobData.findByValue(searchTerm);
